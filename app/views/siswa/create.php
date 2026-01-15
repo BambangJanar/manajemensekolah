@@ -2,7 +2,7 @@
     <div class="col-6">
         <h3 class="mt-4">Tambah Data Siswa</h3>
 
-        <form action="<?= BASEURL; ?>/siswa/store" method="post">
+        <form action="<?= BASEURL; ?>/siswa/store" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="nis" class="form-label">NIS</label>
                 <input type="text" class="form-control" id="nis" name="nis" required>
@@ -19,6 +19,10 @@
                         <option value="<?= $kelas['id']; ?>"><?= $kelas['nama_kelas']; ?></option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+            <div class="mb-3">
+                <label for="foto" class="form-label">Foto</label>
+                <input class="form-control" type="file" id="foto" name="foto">
             </div>
             <div class="mb-3">
                 <label for="alamat" class="form-label">Alamat</label>

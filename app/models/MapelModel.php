@@ -19,10 +19,10 @@ class MapelModel extends Model
 
     public function tambahDataMapel($data)
     {
-        $query = "INSERT INTO " . $this->table . " (nama_mapel, deskripsi) VALUES (?, ?)";
+        $query = "INSERT INTO " . $this->table . " (nama_mapel, deskripsi, guru_pengampu, alokasi_kelas) VALUES (?, ?, ?, ?)";
 
         $this->db->query($query);
-        $this->db->bind('ss', $data['nama_mapel'], $data['deskripsi']);
+        $this->db->bind('ssss', $data['nama_mapel'], $data['deskripsi'], $data['guru_pengampu'], $data['alokasi_kelas']);
 
         $this->db->execute();
         return $this->db->rowCount();
@@ -30,10 +30,10 @@ class MapelModel extends Model
 
     public function ubahDataMapel($data)
     {
-        $query = "UPDATE " . $this->table . " SET nama_mapel = ?, deskripsi = ? WHERE id = ?";
+        $query = "UPDATE " . $this->table . " SET nama_mapel = ?, deskripsi = ?, guru_pengampu = ?, alokasi_kelas = ? WHERE id = ?";
 
         $this->db->query($query);
-        $this->db->bind('ssi', $data['nama_mapel'], $data['deskripsi'], $data['id']);
+        $this->db->bind('ssssi', $data['nama_mapel'], $data['deskripsi'], $data['guru_pengampu'], $data['alokasi_kelas'], $data['id']);
 
         $this->db->execute();
         return $this->db->rowCount();

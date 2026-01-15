@@ -19,10 +19,10 @@ class KelasModel extends Model
 
     public function tambahDataKelas($data)
     {
-        $query = "INSERT INTO " . $this->table . " (nama_kelas) VALUES (?)";
+        $query = "INSERT INTO " . $this->table . " (nama_kelas, wali_kelas, kapasitas) VALUES (?, ?, ?)";
 
         $this->db->query($query);
-        $this->db->bind('s', $data['nama_kelas']);
+        $this->db->bind('ssi', $data['nama_kelas'], $data['wali_kelas'], $data['kapasitas']);
 
         $this->db->execute();
         return $this->db->rowCount();
@@ -30,10 +30,10 @@ class KelasModel extends Model
 
     public function ubahDataKelas($data)
     {
-        $query = "UPDATE " . $this->table . " SET nama_kelas = ? WHERE id = ?";
+        $query = "UPDATE " . $this->table . " SET nama_kelas = ?, wali_kelas = ?, kapasitas = ? WHERE id = ?";
 
         $this->db->query($query);
-        $this->db->bind('si', $data['nama_kelas'], $data['id']);
+        $this->db->bind('ssii', $data['nama_kelas'], $data['wali_kelas'], $data['kapasitas'], $data['id']);
 
         $this->db->execute();
         return $this->db->rowCount();

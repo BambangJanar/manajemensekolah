@@ -4,12 +4,39 @@ class SiswaModel extends Model
 {
     private $table = 'siswa';
 
-    public function getAllSiswa()
+    public function getAllSiswa($filters = [])
     {
         $query = "SELECT siswa.*, kelas.nama_kelas 
                   FROM " . $this->table . " 
                   LEFT JOIN kelas ON siswa.id_kelas = kelas.id";
+
+        $conditions = [];
+        $types = "";
+        $params = [];
+
+        if (!empty($filters['keyword'])) {
+            $conditions[] = "(siswa.nama LIKE ? OR siswa.nis LIKE ?)";
+            $types .= "ss";
+            $params[] = "%" . $filters['keyword'] . "%";
+            $params[] = "%" . $filters['keyword'] . "%";
+        }
+
+        if (!empty($filters['id_kelas'])) {
+            $conditions[] = "siswa.id_kelas = ?";
+            $types .= "i";
+            $params[] = $filters['id_kelas'];
+        }
+
+        if (!empty($conditions)) {
+            $query .= " WHERE " . implode(" AND ", $conditions);
+        }
+
         $this->db->query($query);
+
+        if (!empty($params)) {
+            $this->db->bind($types, ...$params);
+        }
+
         return $this->db->resultSet();
     }
 
@@ -22,10 +49,10 @@ class SiswaModel extends Model
 
     public function tambahDataSiswa($data)
     {
-        $query = "INSERT INTO " . $this->table . " (nis, nama, id_kelas, alamat, no_telp) VALUES (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO " . $this->table . " (nis, nama, id_kelas, alamat, no_telp, foto) VALUES (?, ?, ?, ?, ?, ?)";
 
         $this->db->query($query);
-        $this->db->bind('ssiss', $data['nis'], $data['nama'], $data['id_kelas'], $data['alamat'], $data['no_telp']);
+        $this->db->bind('ssisss', $data['nis'], $data['nama'], $data['id_kelas'], $data['alamat'], $data['no_telp'], $data['foto']);
 
         $this->db->execute();
         return $this->db->rowCount();
@@ -33,10 +60,10 @@ class SiswaModel extends Model
 
     public function ubahDataSiswa($data)
     {
-        $query = "UPDATE " . $this->table . " SET nis = ?, nama = ?, id_kelas = ?, alamat = ?, no_telp = ? WHERE id = ?";
+        $query = "UPDATE " . $this->table . " SET nis = ?, nama = ?, id_kelas = ?, alamat = ?, no_telp = ?, foto = ? WHERE id = ?";
 
         $this->db->query($query);
-        $this->db->bind('ssissi', $data['nis'], $data['nama'], $data['id_kelas'], $data['alamat'], $data['no_telp'], $data['id']);
+        $this->db->bind('ssisssi', $data['nis'], $data['nama'], $data['id_kelas'], $data['alamat'], $data['no_telp'], $data['foto'], $data['id']);
 
         $this->db->execute();
         return $this->db->rowCount();

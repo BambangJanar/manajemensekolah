@@ -2,8 +2,10 @@
     <div class="col-6">
         <h3 class="mt-4">Ubah Data Siswa</h3>
 
-        <form action="<?= BASEURL; ?>/siswa/update" method="post">
+        <form action="<?= BASEURL; ?>/siswa/update" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?= $data['siswa']['id']; ?>">
+            <input type="hidden" name="oldFoto" value="<?= $data['siswa']['foto']; ?>">
+
             <div class="mb-3">
                 <label for="nis" class="form-label">NIS</label>
                 <input type="text" class="form-control" id="nis" name="nis" value="<?= $data['siswa']['nis']; ?>" required>
@@ -20,6 +22,15 @@
                         <option value="<?= $kelas['id']; ?>" <?= ($kelas['id'] == $data['siswa']['id_kelas']) ? 'selected' : ''; ?>><?= $kelas['nama_kelas']; ?></option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+            <div class="mb-3">
+                <label for="foto" class="form-label">Foto</label>
+                <div class="mb-2">
+                    <?php if ($data['siswa']['foto'] && $data['siswa']['foto'] != 'default.jpg') : ?>
+                        <img src="<?= BASEURL; ?>/img/siswa/<?= $data['siswa']['foto']; ?>" class="img-thumbnail" width="100">
+                    <?php endif; ?>
+                </div>
+                <input class="form-control" type="file" id="foto" name="foto">
             </div>
             <div class="mb-3">
                 <label for="alamat" class="form-label">Alamat</label>
