@@ -2,6 +2,18 @@
 
 class Mapel extends Controller
 {
+    public function __construct()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: ' . BASEURL . '/login');
+            exit;
+        }
+        if ($_SESSION['role'] != 'admin') {
+            header('Location: ' . BASEURL);
+            exit;
+        }
+    }
+
     public function index()
     {
         $data['judul'] = 'Daftar Mata Pelajaran';

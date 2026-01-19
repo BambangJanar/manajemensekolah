@@ -56,19 +56,55 @@
                         Dashboard
                     </a>
                 </li>
-                <li>
-                    <a href="<?= BASEURL; ?>/siswa" class="nav-link text-white <?= (strpos($_SERVER['REQUEST_URI'], '/siswa') !== false) ? 'active' : ''; ?>">
-                        Manajemen Siswa
-                    </a>
-                </li>
-                <li>
-                    <a href="<?= BASEURL; ?>/kelas" class="nav-link text-white <?= (strpos($_SERVER['REQUEST_URI'], '/kelas') !== false) ? 'active' : ''; ?>">
-                        Manajemen Kelas
-                    </a>
-                </li>
-                <li>
-                    <a href="<?= BASEURL; ?>/mapel" class="nav-link text-white <?= (strpos($_SERVER['REQUEST_URI'], '/mapel') !== false) ? 'active' : ''; ?>">
-                        Manajemen Mapel
+                <?php if ($_SESSION['role'] == 'admin') : ?>
+                    <li class="nav-item dropdown">
+                        <?php
+                        $activeDataMaster = (strpos($_SERVER['REQUEST_URI'], '/siswa') !== false || strpos($_SERVER['REQUEST_URI'], '/kelas') !== false || strpos($_SERVER['REQUEST_URI'], '/mapel') !== false || strpos($_SERVER['REQUEST_URI'], '/guru') !== false || strpos($_SERVER['REQUEST_URI'], '/jampelajaran') !== false || strpos($_SERVER['REQUEST_URI'], '/jadwalkelas') !== false || strpos($_SERVER['REQUEST_URI'], '/jenispoin') !== false || strpos($_SERVER['REQUEST_URI'], '/laporan') !== false) ? 'active' : '';
+                        $showDataMaster = (strpos($_SERVER['REQUEST_URI'], '/siswa') !== false || strpos($_SERVER['REQUEST_URI'], '/kelas') !== false || strpos($_SERVER['REQUEST_URI'], '/mapel') !== false || strpos($_SERVER['REQUEST_URI'], '/guru') !== false || strpos($_SERVER['REQUEST_URI'], '/jampelajaran') !== false || strpos($_SERVER['REQUEST_URI'], '/jadwalkelas') !== false || strpos($_SERVER['REQUEST_URI'], '/jenispoin') !== false || strpos($_SERVER['REQUEST_URI'], '/laporan') !== false) ? 'show' : '';
+                        ?>
+                        <a class="nav-link dropdown-toggle text-white <?= $activeDataMaster; ?>" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Data Master
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark <?= $showDataMaster; ?>" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item <?= (strpos($_SERVER['REQUEST_URI'], '/siswa') !== false) ? 'active' : ''; ?>" href="<?= BASEURL; ?>/siswa">Manajemen Siswa</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item <?= (strpos($_SERVER['REQUEST_URI'], '/kelas') !== false) ? 'active' : ''; ?>" href="<?= BASEURL; ?>/kelas">Manajemen Kelas</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item <?= (strpos($_SERVER['REQUEST_URI'], '/mapel') !== false) ? 'active' : ''; ?>" href="<?= BASEURL; ?>/mapel">Manajemen Mapel</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item <?= (strpos($_SERVER['REQUEST_URI'], '/guru') !== false) ? 'active' : ''; ?>" href="<?= BASEURL; ?>/guru">Manajemen Guru</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item <?= (strpos($_SERVER['REQUEST_URI'], '/jampelajaran') !== false) ? 'active' : ''; ?>" href="<?= BASEURL; ?>/jampelajaran">Pengaturan Jam Pelajaran</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item <?= (strpos($_SERVER['REQUEST_URI'], '/jenispoin') !== false) ? 'active' : ''; ?>" href="<?= BASEURL; ?>/jenispoin">Poin Prestasi & Pelanggaran</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item <?= (strpos($_SERVER['REQUEST_URI'], '/jadwalkelas') !== false) ? 'active' : ''; ?>" href="<?= BASEURL; ?>/jadwalkelas">Jadwal Kelas</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item <?= (strpos($_SERVER['REQUEST_URI'], '/laporan') !== false) ? 'active' : ''; ?>" href="<?= BASEURL; ?>/laporan">Laporan</a>
+                            </li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
+
+                <?php if ($_SESSION['role'] == 'guru') : ?>
+                    <li class="nav-item">
+                        <a href="<?= BASEURL; ?>/siswa" class="nav-link text-white <?= (strpos($_SERVER['REQUEST_URI'], '/siswa') !== false) ? 'active' : ''; ?>">
+                            Manajemen Siswa
+                        </a>
+                    </li>
+                <?php endif; ?>
+
+                <li class="nav-item mt-3">
+                    <a href="<?= BASEURL; ?>/login/logout" class="nav-link text-white bg-danger">
+                        Logout
                     </a>
                 </li>
             </ul>
