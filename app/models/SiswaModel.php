@@ -6,7 +6,10 @@ class SiswaModel extends Model
 
     public function getAllSiswa($filters = [])
     {
-        $query = "SELECT siswa.*, kelas.nama_kelas 
+        $query = "SELECT siswa.*, kelas.nama_kelas,
+                  (SELECT COALESCE(SUM(jp.poin), 0) FROM riwayat_poin rp JOIN jenis_poin jp ON rp.id_jenis_poin = jp.id WHERE rp.id_siswa = siswa.id AND jp.kategori = 'prestasi') as total_prestasi,
+                  (SELECT COALESCE(SUM(jp.poin), 0) FROM riwayat_poin rp JOIN jenis_poin jp ON rp.id_jenis_poin = jp.id WHERE rp.id_siswa = siswa.id AND jp.kategori = 'pelanggaran') as total_pelanggaran,
+                  (SELECT COALESCE(SUM(jp.poin), 0) FROM riwayat_poin rp JOIN jenis_poin jp ON rp.id_jenis_poin = jp.id WHERE rp.id_siswa = siswa.id) as total_poin
                   FROM " . $this->table . " 
                   LEFT JOIN kelas ON siswa.id_kelas = kelas.id";
 

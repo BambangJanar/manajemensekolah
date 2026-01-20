@@ -140,4 +140,42 @@ $(function() {
         });
     });
 
+    // POIN SISWA (DETAIL)
+    $('.tombolTambahPoin').on('click', function() {
+        $('#formModalLabelPoin').html('Tambah Poin Siswa');
+        $('.modal-footer button[type=submit]').html('Simpan');
+        $('.modal-body form').attr('action', 'http://localhost/manajemensekolah/public/siswa/tambahPoin');
+        
+        $('#id_poin_transaksi').val('');
+        $('#id_jenis_poin').val('');
+        $('#keterangan').val('');
+        // Date and ID Siswa are handled by PHP/View defaults for Add
+    });
+
+    $('.tampilModalUbahPoin').on('click', function() {
+        $('#formModalLabelPoin').html('Ubah Poin Siswa');
+        $('.modal-footer button[type=submit]').html('Ubah Data');
+        $('.modal-body form').attr('action', 'http://localhost/manajemensekolah/public/siswa/ubahPoin');
+
+        const id = $(this).data('id');
+        
+        $.ajax({
+            url: 'http://localhost/manajemensekolah/public/siswa/getUbahPoin',
+            data: {id : id},
+            method: 'post',
+            dataType: 'json',
+            success: function(data) {
+                $('#id_poin_transaksi').val(data.id);
+                $('#id_jenis_poin').val(data.id_jenis_poin);
+                $('#tanggal').val(data.tanggal); // Format might need adjustment if datetime-local input expects specific format (YYYY-MM-DDTHH:mm), PHP date() usually handles this in value attr, but here we set via JS. Data.tanggal is 'YYYY-MM-DD HH:mm:ss'.
+                // Adjust datetime string for input type=datetime-local
+                let dt = data.tanggal.replace(' ', 'T');
+                $('#tanggal').val(dt);
+                
+                $('#keterangan').val(data.keterangan);
+                $('#id_siswa_modal').val(data.id_siswa); 
+            }
+        });
+    });
+
 });

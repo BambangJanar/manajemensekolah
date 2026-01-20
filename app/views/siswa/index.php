@@ -37,6 +37,8 @@
                     <th>Kelas</th>
                     <th>Alamat</th>
                     <th>Tlp</th>
+                    <th>Poin (P/M/T)</th>
+                    <th>Status</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -58,6 +60,40 @@
                         <td><?= $siswa['alamat']; ?></td>
                         <td><?= $siswa['no_telp']; ?></td>
                         <td>
+                            <span class="badge bg-success" title="Prestasi">+<?= $siswa['total_prestasi']; ?></span>
+                            <span class="badge bg-danger" title="Pelanggaran"><?= $siswa['total_pelanggaran']; ?></span>
+                            <span class="badge bg-primary" title="Total Poin"><?= $siswa['total_poin']; ?></span>
+                        </td>
+                        <td>
+                            <?php
+                            $tp = $siswa['total_poin'];
+                            $status = 'Aman';
+                            $badgeClass = 'bg-primary';
+
+                            if ($tp >= 50) {
+                                $status = 'Teladan';
+                                $badgeClass = 'bg-success';
+                            } elseif ($tp >= 0 && $tp < 50) {
+                                $status = 'Aman';
+                                $badgeClass = 'bg-info text-dark';
+                            } elseif ($tp >= -19 && $tp < 0) {
+                                $status = 'Pengawasan';
+                                $badgeClass = 'bg-warning text-dark';
+                            } elseif ($tp >= -49 && $tp < -19) {
+                                $status = 'SP 1';
+                                $badgeClass = 'bg-warning border border-danger text-dark';
+                            } elseif ($tp >= -99 && $tp < -49) {
+                                $status = 'SP 2';
+                                $badgeClass = 'bg-danger';
+                            } else {
+                                $status = 'Drop Out';
+                                $badgeClass = 'bg-dark';
+                            }
+                            ?>
+                            <span class="badge <?= $badgeClass; ?>"><?= $status; ?></span>
+                        </td>
+                        <td>
+                            <a href="<?= BASEURL; ?>/siswa/detail_poin/<?= $siswa['id']; ?>" class="btn btn-info btn-sm">Detail Poin</a>
                             <a href="<?= BASEURL; ?>/siswa/edit/<?= $siswa['id']; ?>" class="btn btn-success btn-sm">Ubah</a>
                             <a href="<?= BASEURL; ?>/siswa/delete/<?= $siswa['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus data?');">Hapus</a>
                         </td>

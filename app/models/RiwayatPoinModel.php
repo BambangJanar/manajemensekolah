@@ -27,11 +27,42 @@ class RiwayatPoinModel extends Model
         return $this->db->resultSet();
     }
 
+    public function getRiwayatById($id)
+    {
+        $query = "SELECT r.*, j.nama_poin, j.poin, j.kategori 
+                  FROM " . $this->table . " r
+                  JOIN jenis_poin j ON r.id_jenis_poin = j.id
+                  WHERE r.id = ?";
+        $this->db->query($query);
+        $this->db->bind('i', $id);
+        return $this->db->single();
+    }
+
     public function tambahDataRiwayat($data)
     {
         $query = "INSERT INTO riwayat_poin (id_siswa, id_jenis_poin, tanggal, keterangan) VALUES (?, ?, ?, ?)";
         $this->db->query($query);
         $this->db->bind('iiss', $data['id_siswa'], $data['id_jenis_poin'], $data['tanggal'], $data['keterangan']);
+
+        $this->db->execute();
+        return $this->db->rowCount();
+    }
+
+    public function ubahDataRiwayat($data)
+    {
+        $query = "UPDATE riwayat_poin SET id_siswa = ?, id_jenis_poin = ?, tanggal = ?, keterangan = ? WHERE id = ?";
+        $this->db->query($query);
+        $this->db->bind('iissi', $data['id_siswa'], $data['id_jenis_poin'], $data['tanggal'], $data['keterangan'], $data['id']);
+
+        $this->db->execute();
+        return $this->db->rowCount();
+    }
+
+    public function hapusDataRiwayat($id)
+    {
+        $query = "DELETE FROM riwayat_poin WHERE id = ?";
+        $this->db->query($query);
+        $this->db->bind('i', $id);
 
         $this->db->execute();
         return $this->db->rowCount();

@@ -28,6 +28,67 @@ class Siswa extends Controller
         $this->view('templates/footer');
     }
 
+    public function cari()
+    {
+        $data['judul'] = 'Daftar Siswa';
+        $data['siswa'] = $this->model('SiswaModel')->cariDataSiswa();
+        $this->view('templates/header', $data);
+        $this->view('siswa/index', $data);
+        $this->view('templates/footer');
+    }
+
+    // --- POINT MANAGEMENT FOR SPECIFIC STUDENT ---
+
+    public function detail_poin($id)
+    {
+        $data['judul'] = 'Detail Poin Siswa';
+        $data['siswa'] = $this->model('SiswaModel')->getSiswaById($id);
+        $data['riwayat'] = $this->model('RiwayatPoinModel')->getRiwayatBySiswa($id);
+        $data['jenis_poin'] = $this->model('JenisPoinModel')->getAllJenisPoin();
+
+        $this->view('templates/header', $data);
+        $this->view('siswa/detail_poin', $data);
+        $this->view('templates/footer');
+    }
+
+    public function tambahPoin()
+    {
+        if ($this->model('RiwayatPoinModel')->tambahDataRiwayat($_POST) > 0) {
+            Flasher::setFlash('berhasil', 'ditambahkan', 'success');
+        } else {
+            Flasher::setFlash('gagal', 'ditambahkan', 'danger');
+        }
+        header('Location: ' . BASEURL . '/siswa/detail_poin/' . $_POST['id_siswa']);
+        exit;
+    }
+
+    public function ubahPoin()
+    {
+        if ($this->model('RiwayatPoinModel')->ubahDataRiwayat($_POST) > 0) {
+            Flasher::setFlash('berhasil', 'diubah', 'success');
+        } else {
+            Flasher::setFlash('gagal', 'diubah', 'danger');
+        }
+        header('Location: ' . BASEURL . '/siswa/detail_poin/' . $_POST['id_siswa']);
+        exit;
+    }
+
+    public function hapusPoin($id, $id_siswa)
+    {
+        if ($this->model('RiwayatPoinModel')->hapusDataRiwayat($id) > 0) {
+            Flasher::setFlash('berhasil', 'dihapus', 'success');
+        } else {
+            Flasher::setFlash('gagal', 'dihapus', 'danger');
+        }
+        header('Location: ' . BASEURL . '/siswa/detail_poin/' . $id_siswa);
+        exit;
+    }
+
+    public function getUbahPoin()
+    {
+        echo json_encode($this->model('RiwayatPoinModel')->getRiwayatById($_POST['id']));
+    }
+
     public function create()
     {
         $data['judul'] = 'Tambah Data Siswa';
